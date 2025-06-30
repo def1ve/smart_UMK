@@ -1,0 +1,14 @@
+﻿<Window x:Class="smart_UMK.Views.Windows.SearchReplaceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Поиск и замена" Height="200" Width="400">
+    <Grid>
+        <StackPanel Margin="10">
+            <TextBlock Text="Текст для поиска:"/>
+            <TextBox x:Name="SearchTextBox" Margin="0,5"/>
+            <TextBlock Text="Текст для замены:"/>
+            <TextBox x:Name="ReplaceTextBox" Margin="0,5"/>
+            <Button Content="Заменить" Margin="0,10" Click="OnReplaceButtonClick"/>
+        </StackPanel>
+    </Grid>
+</Window>
