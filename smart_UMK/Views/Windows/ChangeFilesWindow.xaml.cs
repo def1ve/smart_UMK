@@ -74,30 +74,24 @@ namespace smart_UMK.Views.Windows
                 return;
             }
 
-            string disciplineName = DisciplineNameTextBox.Text;
-
-            // Получаем реальный список загруженных файлов
-            List<string> filePaths = filesCollection.Select(f => f.FilePath).ToList();
-
             var dialog = new CommonOpenFileDialog { IsFolderPicker = true };
             if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
                 string saveFolderPath = dialog.FileName;
-
                 string newDisciplineName = DisciplineNameTextBox.Text;
-                string newDirection = Speciality1ComboBox.SelectedItem is ComboBoxItem item ? item.Content.ToString() : "";
-                string newFormDirection = EducationFormat1ComboBox.SelectedItem is ComboBoxItem item2 ? item2.Content.ToString() : "";
 
+                // Получаем реальный список загруженных файлов
+                List<string> filePaths = filesCollection.Select(f => f.FilePath).ToList();
 
                 foreach (string filePath in filePaths)
                 {
-                    ReplaceContentControlText(filePath, newDisciplineName, newDirection, newFormDirection, saveFolderPath);
+                    ReplaceContentControlText(filePath, newDisciplineName, saveFolderPath);
                 }
                 MessageBox.Show("Файлы успешно сохранены!", "Готово", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
-        private void ReplaceContentControlText(string filePath, string newDisciplineName, string newDirection, string newFormDirection, string saveFolderPath)
+        private void ReplaceContentControlText(string filePath, string newDisciplineName, string saveFolderPath)
         {
             if (IsFileLocked(filePath))
             {
@@ -111,20 +105,34 @@ namespace smart_UMK.Views.Windows
             {
                 doc = wordApp.Documents.Open(filePath);
 
-                // Ищем элементы управления содержимым
+                // Словарь для хранения всех значений из ComboBox и TextBox
+                var replacementValues = new Dictionary<string, string>
+        {
+            { "DisciplineName", newDisciplineName }
+        };
+
+                // Собираем данные из всех ComboBox для направлений (1-5)
+                for (int i = 1; i <= 5; i++)
+                {
+                    var specialityComboBox = this.FindName($"Speciality{i}ComboBox") as ComboBox;
+                    if (specialityComboBox != null && specialityComboBox.SelectedItem is ComboBoxItem specialityItem)
+                    {
+                        replacementValues[$"Direction{i}"] = specialityItem.Content.ToString();
+                    }
+
+                    var formatComboBox = this.FindName($"EducationFormat{i}ComboBox") as ComboBox;
+                    if (formatComboBox != null && formatComboBox.SelectedItem is ComboBoxItem formatItem)
+                    {
+                        replacementValues[$"FormDirection{i}"] = formatItem.Content.ToString();
+                    }
+                }
+
+                // Заменяем содержимое в документе
                 foreach (Microsoft.Office.Interop.Word.ContentControl control in doc.ContentControls)
                 {
-                    if (control.Title == "DisciplineName")
+                    if (!string.IsNullOrEmpty(control.Title) && replacementValues.TryGetValue(control.Title, out string value))
                     {
-                        control.Range.Text = newDisciplineName;
-                    }
-                    else if (control.Title == "Direction1")
-                    {
-                        control.Range.Text = newDirection; // Заменяем направление
-                    }
-                    else if (control.Title == "FormDirection1")
-                    {
-                        control.Range.Text = newFormDirection; // Заменяем форму обучения
+                        control.Range.Text = value;
                     }
                 }
 
@@ -137,7 +145,6 @@ namespace smart_UMK.Views.Windows
                 doc.Close();
 
                 MainWindow mainWindow = System.Windows.Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-
                 if (mainWindow != null)
                 {
                     mainWindow.SavedFolderPath = saveFolderPath; // Сохраняем путь в MainWindow
