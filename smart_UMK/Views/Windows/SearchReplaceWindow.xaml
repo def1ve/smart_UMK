@@ -1,14 +1,30 @@
 ﻿<Window x:Class="smart_UMK.Views.Windows.SearchReplaceWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Поиск и замена" Height="200" Width="400">
-    <Grid>
-        <StackPanel Margin="10">
-            <TextBlock Text="Текст для поиска:"/>
-            <TextBox x:Name="SearchTextBox" Margin="0,5"/>
-            <TextBlock Text="Текст для замены:"/>
-            <TextBox x:Name="ReplaceTextBox" Margin="0,5"/>
-            <Button Content="Заменить" Margin="0,10" Click="OnReplaceButtonClick"/>
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:smart_UMK.Views.Windows"
+        mc:Ignorable="d"
+        Title="Поиск и замена текста" Height="250" Width="400">
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Текст для поиска:" Grid.Row="0"/>
+        <TextBox x:Name="SearchTxtBox" Grid.Row="1" Margin="0,5,0,10"/>
+
+        <TextBlock Text="Текст для замены:" Grid.Row="2"/>
+        <TextBox x:Name="ReplaceTxtBox" Grid.Row="3" Margin="0,5,0,15"/>
+
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Заменить" Click="OnReplaceButtonClick" Width="100" Margin="0,0,10,0"/>
+            <Button Content="Отмена" Click="OnCancelButtonClick" Width="100"/>
         </StackPanel>
     </Grid>
 </Window>
