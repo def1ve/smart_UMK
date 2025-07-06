@@ -8,15 +8,14 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="FilesTreeViewPage">
 
-    <Grid>
+    <Grid Cursor="">
         <ListBox 
             x:Name="FilesListBox"
             PreviewMouseDoubleClick="FilesListBox_PreviewMouseDoubleClick" 
             Margin="10" HorizontalContentAlignment="Center"
             Grid.ColumnSpan="2"
-            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-            >
-            
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -24,21 +23,60 @@
             </ListBox.ItemContainerStyle>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel
-                Width="{Binding ElementName=FilesListBox, Path=ActualWidth}"/>
+                    <WrapPanel Width="{Binding ElementName=FilesListBox, Path=ActualWidth}"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border CornerRadius="6" Width="165" Height="165" BorderBrush="#FF444242" OpacityMask="#FF939393" BorderThickness="1,1,1,1"
-                    Margin="5">
-                        <StackPanel Background="{x:Null}" VerticalAlignment="Center">
-                            <TextBlock TextAlignment="Center" TextWrapping="Wrap" Text="{Binding FileName}" FontSize="16" Margin="10,0"/>
-                            <!-- <TextBlock TextAlignment="Center" TextWrapping="Wrap" Text="{Binding FilePath}" FontSize="14" Margin="10,0"/> -->
-                        </StackPanel>
-                    </Border>
+                    <Grid>
+                        <Border CornerRadius="6" Width="165" Height="165" BorderBrush="#FF444242" 
+                                OpacityMask="#FF939393" BorderThickness="1,1,1,1" Margin="5">
+                            <StackPanel Background="{x:Null}" VerticalAlignment="Center">
+                                <TextBlock TextAlignment="Center" TextWrapping="Wrap" 
+                                           Text="{Binding FileName}" FontSize="16" Margin="10,0"/>
+                            </StackPanel>
+                        </Border>
+                        <!-- Кнопка удаления одного файла -->
+                        <Button x:Name="DeleteSingleFileButton" 
+                                Content="✕" 
+                                Width="20" 
+                                Height="20"
+                                FontSize="10"
+                                Padding="0"
+                                HorizontalAlignment="Right" 
+                                VerticalAlignment="Top" 
+                                Margin="5,5,5,0"
+                                Background="Red"
+                                Foreground="White"
+                                FontWeight="Bold"
+                                Click="DeleteFileButton_Click"
+                                Tag="{Binding}"
+                                Cursor="Hand">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" 
+                                            CornerRadius="3">
+                                        <ContentPresenter HorizontalAlignment="Center" 
+                                                          VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <!-- Кнопка очистки всех файлов -->
+        <Button x:Name="ClearAllButton"
+                Content="Очистить все"
+                Width="100"
+                Height="30"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="10"
+                FontSize="12"
+                Click="ClearAllButton_Click"
+                Cursor="Hand"/>
     </Grid>
 </Page>

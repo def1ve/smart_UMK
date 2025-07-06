@@ -27,7 +27,6 @@ namespace smart_UMK.Views.Pages
     {
         public ObservableCollection<FileViewModel> WordsFiles { get; set; }
 
-
         public FilesViewPage(ObservableCollection<FileViewModel> filesCollection)
         {
             InitializeComponent();
@@ -65,6 +64,57 @@ namespace smart_UMK.Views.Pages
             //    //    MessageBox.Show($"Ошибка при обработке файла: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             //    //}
             //}
+        }
+        //private void ClearAllButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // Очистка всех элементов
+        //    FilesListBox.Items.Clear();
+
+        //    // Если используется привязка данных:
+        //    // if (FilesListBox.ItemsSource is ObservableCollection<YourFileType> collection)
+        //    // {
+        //    //     collection.Clear();
+        //    // }
+        //}
+
+        //private void DeleteFileButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (sender is Button button && button.Tag != null)
+        //    {
+        //        var itemToRemove = button.Tag;
+
+        //        // Удаление конкретного элемента
+        //        //FilesListBox.Items.Remove(itemToRemove);
+
+        //        // Если используется привязка данных:
+        //        //    if (FilesListBox.ItemsSource is ObservableCollection<YourFileType> collection)
+        //        //    {
+        //        //        collection.Remove((YourFileType)itemToRemove);
+        //        //    }
+        //    }
+        //}
+        // Обработчик для кнопки "Очистить все"
+        private void ClearAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Используем ItemsSource вместо Items
+            if (FilesListBox.ItemsSource is System.Collections.IList collection)
+            {
+                collection.Clear();
+            }
+        }
+
+        private void DeleteFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag != null)
+            {
+                var itemToRemove = button.Tag;
+
+                // Используем ItemsSource вместо Items
+                if (FilesListBox.ItemsSource is System.Collections.IList collection)
+                {
+                    collection.Remove(itemToRemove);
+                }
+            }
         }
 
     }
