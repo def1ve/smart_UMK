@@ -83,7 +83,7 @@ namespace smart_UMK.Views.Pages
                MessageBoxImage.Warning);
 
             // Используем ItemsSource вместо Items
-            if (FilesListBox.ItemsSource is System.Collections.IList collection)
+            if (FilesListBox.ItemsSource is System.Collections.IList collection && result == MessageBoxResult.Yes)
             {
                 collection.Clear();
             }
