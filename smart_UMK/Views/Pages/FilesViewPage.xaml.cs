@@ -17,6 +17,7 @@ using DocumentFormat.OpenXml.Packaging;
 using smart_UMK.Services;
 using smart_UMK.ViewModels;
 using smart_UMK.Views.Windows;
+using Microsoft.Win32;
 
 namespace smart_UMK.Views.Pages
 {
@@ -32,6 +33,14 @@ namespace smart_UMK.Views.Pages
             InitializeComponent();
             WordsFiles = filesCollection;
             FilesListBox.ItemsSource = WordsFiles;
+            filesCollection.CollectionChanged += (s, e) =>
+            {
+                // Обновляем видимость кнопки при изменении коллекции
+                ClearAllButton.Visibility = filesCollection.Count > 0
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+            };
+
         }
 
         private async void FilesListBox_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -65,37 +74,14 @@ namespace smart_UMK.Views.Pages
             //    //}
             //}
         }
-        //private void ClearAllButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    // Очистка всех элементов
-        //    FilesListBox.Items.Clear();
-
-        //    // Если используется привязка данных:
-        //    // if (FilesListBox.ItemsSource is ObservableCollection<YourFileType> collection)
-        //    // {
-        //    //     collection.Clear();
-        //    // }
-        //}
-
-        //private void DeleteFileButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (sender is Button button && button.Tag != null)
-        //    {
-        //        var itemToRemove = button.Tag;
-
-        //        // Удаление конкретного элемента
-        //        //FilesListBox.Items.Remove(itemToRemove);
-
-        //        // Если используется привязка данных:
-        //        //    if (FilesListBox.ItemsSource is ObservableCollection<YourFileType> collection)
-        //        //    {
-        //        //        collection.Remove((YourFileType)itemToRemove);
-        //        //    }
-        //    }
-        //}
-        // Обработчик для кнопки "Очистить все"
         private void ClearAllButton_Click(object sender, RoutedEventArgs e)
         {
+            var result = MessageBox.Show(
+               "Вы уверены, что хотите удалить все прикрепленные файлы?",
+               "Подтверждение удаления",
+               MessageBoxButton.YesNo,
+               MessageBoxImage.Warning);
+
             // Используем ItemsSource вместо Items
             if (FilesListBox.ItemsSource is System.Collections.IList collection)
             {

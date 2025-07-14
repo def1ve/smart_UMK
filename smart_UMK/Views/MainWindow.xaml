@@ -54,7 +54,7 @@
                         <TextBlock Text="Умный УМК" FontSize="15" Margin="0 0 0 5" Foreground="#c2cfff"/>
                        
                                     <!--Версия программы-->
-                        <TextBlock Text="Pre-alpha 0.1" FontSize="10" Margin="0 0 0 5" Foreground="#7788bf"/>
+                        <TextBlock Text="Pre-alpha 0.3" FontSize="10" Margin="0 0 0 5" Foreground="#7788bf"/>
 
                     </StackPanel>
 
